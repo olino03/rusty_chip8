@@ -1,4 +1,5 @@
 use crate::constants;
+use crate::screen;
 
 pub struct Chip8 {
     //The 4096 bytes of ram
@@ -27,6 +28,9 @@ pub struct Chip8 {
 
     //sound timer (8 bits)
     pub st: u8,
+
+    //screen (64 * 32 bits)
+    pub screen: screen::Screen,
 }
 
 impl Chip8 {
@@ -42,6 +46,7 @@ impl Chip8 {
         let sp: u16 = 0;
         let dt: u8 = 0;
         let st: u8 = 0;
+        let screen = Screen.new();
 
         //copy the font value into the starting address space
         let font: [u8; 80] = [
@@ -73,6 +78,7 @@ impl Chip8 {
             sp,
             dt,
             st,
+            screen,
         }
     }
 }
