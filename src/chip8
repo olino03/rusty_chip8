@@ -1,3 +1,78 @@
+use crate::constants;
+
 pub struct Chip8 {
-    
+    //The 4096 bytes of ram
+    pub ram: [u8; constants::ADRESS_SPACE],
+
+    //The 16 registers (8 bits each)
+    pub registers: [u8; constants::REGISTER_AMMOUNT],
+
+    //stack (64 levels of nesting)
+    pub stack: [u16; constants::STACK_SIZE],
+
+    //index register (16 bits)
+    pub index: u16,
+
+    //stack index (16 bits)
+    pub stack_index: u16,
+
+    //program counter (16 bits)
+    pub pc: u16,
+
+    //stack pointer (16 bits)
+    pub sp: u16,
+
+    //delay timer (8 bits)
+    pub dt: u8,
+
+    //sound timer (8 bits)
+    pub st: u8,
+}
+
+impl Chip8 {
+    pub fn new(rom: Vec<u8>) -> Self {
+        //initialize default state of the emulator
+
+        let mut ram: [u8; constants::ADRESS_SPACE] = [0; constants::ADRESS_SPACE];
+        let registers: [u8; constants::REGISTER_AMMOUNT] = [0; constants::REGISTER_AMMOUNT];
+        let stack: [u16; constants::STACK_SIZE] = [0; constants::STACK_SIZE];
+        let index: u16 = 0;
+        let stack_index: u16 = 0;
+        let pc: u16 = 0;
+        let sp: u16 = 0;
+        let dt: u8 = 0;
+        let st: u8 = 0;
+
+        //copy the font value into the starting address space
+        let font: [u8; 80] = [
+            0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
+            0x20, 0x60, 0x20, 0x20, 0x70, // 1
+            0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
+            0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
+            0x90, 0x90, 0xF0, 0x10, 0x10, // 4
+            0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
+            0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
+            0xF0, 0x10, 0x20, 0x40, 0x40, // 7
+            0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
+            0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
+            0xF0, 0x90, 0xF0, 0x90, 0x90, // A
+            0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
+            0xF0, 0x80, 0x80, 0x80, 0xF0, // C
+            0xE0, 0x90, 0x90, 0x90, 0xE0, // D
+            0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
+            0xF0, 0x80, 0xF0, 0x80, 0x80, // F
+        ];
+        ram[..80].copy_from_slice(&font);
+        Chip8 {
+            ram,
+            registers,
+            stack,
+            index,
+            stack_index,
+            pc,
+            sp,
+            dt,
+            st,
+        }
+    }
 }
